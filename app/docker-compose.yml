@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    command: redis-server --requirepass password
+    ports:
+      - "6379:6379"
+
+  nodejs-app:
+    image: 07vishnu/node-redis-app:latest
+    container_name: nodejs-app
+    restart: always
+    environment:
+      - PORT=3000
+      - REDIS_PASSWORD=password
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+
